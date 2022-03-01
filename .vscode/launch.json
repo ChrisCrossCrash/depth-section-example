@@ -1,11 +1,11 @@
 {
   "configurations": [
     {
-      "type": "node-terminal",
-      "name": "Run Script: start",
+      "name": "Launch Chrome",
       "request": "launch",
-      "command": "yarn run start",
-      "cwd": "${workspaceFolder}"
+      "type": "pwa-chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }

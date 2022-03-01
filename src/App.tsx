@@ -1,32 +1,21 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useSpring, animated, config } from '@react-spring/three'
 import { DepthSection, getCameraAimPosY } from 'depth-section'
 import './App.css'
-import * as THREE from 'three'
 
 function MyRotatingBox() {
-  const myMesh = React.useRef<THREE.Mesh>()
   const [active, setActive] = useState(false)
-
-  const { scale } = useSpring({
-    scale: active ? 1.5 : 1,
-    config: config.wobbly,
-  })
+  const [spring, api] = useSpring(() => ({ posY: 0, config: config.stiff }))
 
   useFrame((state) => {
-    if (!myMesh.current) return
-    myMesh.current.rotation.x = state.clock.getElapsedTime()
-    myMesh.current.rotation.y = state.clock.getElapsedTime()
-    myMesh.current.position.y = getCameraAimPosY(state)
+    api.start({
+      posY: getCameraAimPosY(state),
+    })
   })
 
   return (
-    <animated.mesh
-      scale={scale}
-      onClick={() => setActive(!active)}
-      ref={myMesh}
-    >
+    <animated.mesh onClick={() => setActive(!active)} position-y={spring.posY}>
       <boxBufferGeometry />
       <meshPhongMaterial color='royalblue' />
     </animated.mesh>
