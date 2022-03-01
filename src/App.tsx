@@ -1,41 +1,42 @@
-import { useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { useRef } from 'react'
 import './App.css'
-import type { Mesh } from 'three'
+import { DepthSection } from 'depth-section'
+import { Box } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
+import { getCameraAimPos } from 'depth-section'
 
-type BoxProps = JSX.IntrinsicElements['mesh']
+const InnerSection = () => {
+  const mesh = useRef<any>()
+  useFrame((state) => {
+    if (!mesh.current) return
 
-const Box = (props: BoxProps) => {
-  const mesh = useRef<Mesh>(null!)
+    mesh.current.rotation.x += 0.01
+    mesh.current.rotation.y += 0.01
 
-  const [isHovered, setIsHovered] = useState(false)
-  const [isActive, setIsActive] = useState(false)
-
-  useFrame(() => (mesh.current.rotation.y += 0.01))
+    const [aimX, aimY] = getCameraAimPos(state)
+    mesh.current.position.x = aimX
+    mesh.current.position.y = aimY
+  })
 
   return (
-    <mesh
-      {...props}
-      ref={mesh}
-      scale={isActive ? 1.5 : 1}
-      onClick={() => setIsActive(!isActive)}
-      onPointerOver={() => setIsHovered(true)}
-      onPointerOut={() => setIsHovered(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={isHovered ? 'hotpink' : 'orange'} />
-    </mesh>
+    <>
+      <Box ref={mesh}>
+        <meshStandardMaterial color='limegreen' />
+      </Box>
+      <pointLight position={[10, 10, 10]} />
+      <ambientLight intensity={0.2} />
+    </>
   )
 }
 
 function App() {
   return (
     <div id='three-wrapper'>
-      <Canvas camera={{ fov: 55 }}>
-        <pointLight position={[10, 10, 10]} intensity={0.5} />
-        <Box position={[-1.2, 0, 0]} />
-        <Box position={[1.2, 0, 0]} />
-      </Canvas>
+      <div style={{ height: '100vh' }} />
+      <DepthSection>
+        <InnerSection />
+      </DepthSection>
+      <div style={{ height: '100vh' }} />
     </div>
   )
 }
