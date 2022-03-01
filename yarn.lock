@@ -3476,9 +3476,9 @@ depd@~1.1.2:
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
 
 depth-section@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/depth-section/-/depth-section-0.10.0.tgz#a2753ccd85c34c25d6200572a879dda5005005f1"
-  integrity sha512-+gExtPe5InNXwJ2e8ddUDfID+jfmB6Py5luegpEvTs4dmGFSU3i1aymFGcnCYf9LBFWSHUSAOZtEy2yALAQdEg==
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/depth-section/-/depth-section-0.10.1.tgz#f6d0abd4a7c40f58c9f6ff39db1cb25d746cef7a"
+  integrity sha512-UEEsl/KQOw6nt58UL4f/jqOrl7NnEEk8HT0rjkBAFCeFfjDEw79isgnAZpUy7SMywS67kc5e5VtYOE8e8mepLw==
 
 destroy@~1.0.4:
   version "1.0.4"
