@@ -33,9 +33,11 @@ function App() {
   return (
     <div id='three-wrapper'>
       <div style={{ height: '100vh' }} />
-      <DepthSection>
-        <InnerSection />
-      </DepthSection>
+      <div style={{ height: '100vh' }}>
+        <DepthSection>
+          <InnerSection />
+        </DepthSection>
+      </div>
       <div style={{ height: '100vh' }} />
     </div>
   )
