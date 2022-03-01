@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import { useSpring, animated, config } from '@react-spring/three'
+import { DepthSection, getCameraAimPosY } from 'depth-section'
 import './App.css'
 import * as THREE from 'three'
 
@@ -13,10 +14,11 @@ function MyRotatingBox() {
     config: config.wobbly,
   })
 
-  useFrame(({ clock }) => {
+  useFrame((state) => {
     if (!myMesh.current) return
-    myMesh.current.rotation.x = clock.getElapsedTime()
-    myMesh.current.rotation.y = clock.getElapsedTime()
+    myMesh.current.rotation.x = state.clock.getElapsedTime()
+    myMesh.current.rotation.y = state.clock.getElapsedTime()
+    myMesh.current.position.y = getCameraAimPosY(state)
   })
 
   return (
@@ -33,12 +35,16 @@ function MyRotatingBox() {
 
 export default function App() {
   return (
-    <div id='three-wrapper'>
-      <Canvas>
-        <MyRotatingBox />
-        <ambientLight intensity={0.1} />
-        <directionalLight />
-      </Canvas>
-    </div>
+    <>
+      <div style={{ height: '100vh' }} />
+      <div id='three-wrapper'>
+        <DepthSection debug>
+          <MyRotatingBox />
+          <ambientLight intensity={0.1} />
+          <directionalLight />
+        </DepthSection>
+      </div>
+      <div style={{ height: '100vh' }} />
+    </>
   )
 }
