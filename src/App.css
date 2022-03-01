@@ -2,3 +2,7 @@ body {
   height: 100vh;
   background: #333;
 }
+
+#three-wrapper {
+  height: 100vh;
+}

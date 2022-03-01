@@ -1,46 +1,44 @@
-import { useRef } from 'react'
+import React, { useState } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { useSpring, animated, config } from '@react-spring/three'
 import './App.css'
-import { DepthSection } from 'depth-section'
-import { Box } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
-import { getCameraAimPos } from 'depth-section'
+import * as THREE from 'three'
 
-const InnerSection = () => {
-  const mesh = useRef<any>()
-  useFrame((state) => {
-    if (!mesh.current) return
+function MyRotatingBox() {
+  const myMesh = React.useRef<THREE.Mesh>()
+  const [active, setActive] = useState(false)
 
-    mesh.current.rotation.x += 0.01
-    mesh.current.rotation.y += 0.01
+  const { scale } = useSpring({
+    scale: active ? 1.5 : 1,
+    config: config.wobbly,
+  })
 
-    const [aimX, aimY] = getCameraAimPos(state)
-    mesh.current.position.x = aimX
-    mesh.current.position.y = aimY
+  useFrame(({ clock }) => {
+    if (!myMesh.current) return
+    myMesh.current.rotation.x = clock.getElapsedTime()
+    myMesh.current.rotation.y = clock.getElapsedTime()
   })
 
   return (
-    <>
-      <Box ref={mesh}>
-        <meshStandardMaterial color='limegreen' />
-      </Box>
-      <pointLight position={[10, 10, 10]} />
-      <ambientLight intensity={0.2} />
-    </>
+    <animated.mesh
+      scale={scale}
+      onClick={() => setActive(!active)}
+      ref={myMesh}
+    >
+      <boxBufferGeometry />
+      <meshPhongMaterial color='royalblue' />
+    </animated.mesh>
   )
 }
 
-function App() {
+export default function App() {
   return (
     <div id='three-wrapper'>
-      <div style={{ height: '100vh' }} />
-      <div style={{ height: '100vh' }}>
-        <DepthSection>
-          <InnerSection />
-        </DepthSection>
-      </div>
-      <div style={{ height: '100vh' }} />
+      <Canvas>
+        <MyRotatingBox />
+        <ambientLight intensity={0.1} />
+        <directionalLight />
+      </Canvas>
     </div>
   )
 }
-
-export default App
